@@ -32,12 +32,6 @@ jobs:
      - name: Test
        run: go test -v
 
-     - name: Echo
-       env:
-         GIT_HASH: $(git rev-parse --short "$GITHUB_SHA")
-       run:  |
-             echo "Sha: ${{ env.GIT_HASH }} - $GITHUB_SHA" 
-
      - name: Login
        run: docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}
       
@@ -45,7 +39,11 @@ jobs:
        run: docker image build -f ./Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/my-firstimage:0.0.1 ./
 
      - name: Tag image
+       env:
+         GIT_HASH: $(git rev-parse --short "$GITHUB_SHA")
        run: docker tag ${{ secrets.DOCKERHUB_USERNAME }}/my-firstimage:0.0.1 ${{ secrets.DOCKERHUB_USERNAME }}/my-firstimage:${{ env.GIT_HASH }}
       
      - name: publish
+       env:
+         GIT_HASH: $(git rev-parse --short "$GITHUB_SHA")
        run: docker image push ${{ secrets.DOCKERHUB_USERNAME }}/my-firstimage:0.0.1 | docker image push ${{ secrets.DOCKERHUB_USERNAME }}/my-firstimage:${{ env.GIT_HASH }}
