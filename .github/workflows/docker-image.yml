@@ -13,8 +13,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+     - name: Set up Go 1.x
+      uses: actions/setup-go@v2
+      with:
+        go-version: ^1.15
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Install golang-migrate
+      run: |
+        curl -L https://github.com/golang-migrate/migrate/releases/download/v4.12.2/migrate.linux-amd64.tar.gz | tar xvz
+        sudo mv migrate.linux-amd64 /usr/bin/migrate
+        which migrate
+
+    - name: Test
+      run: go test -v
+
      - name: Echo
-       run:  echo ${{ secrets.DOCKERHUB_USERNAME }}
+       run:  GIT_SHA="$(git rev-parse --short HEAD)"
 
      - name: Check out code
        uses: actions/checkout@v2
@@ -23,7 +42,10 @@ jobs:
        run: docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}
       
      - name: Build
-       run: docker image build -f ./Dockerfile -t arthofer93/my-firstimage:0.0.1 ./
+       run: docker image build -f ./Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/my-firstimage:0.0.1 ./
+
+     - name: Tag image
+       run: docker tag ${{ secrets.DOCKERHUB_USERNAME }}/my-firstimage:0.0.1 ${{ secrets.DOCKERHUB_USERNAME }}/my-firstimage:$GIT_SHA
       
      - name: publish
-       run: docker image push arthofer93/my-firstimage:0.0.1
+       run: docker image push ${{ secrets.DOCKERHUB_USERNAME }}/my-firstimage:0.0.1 | docker image push ${{ secrets.DOCKERHUB_USERNAME }}/my-firstimage:$GIT_SHA
