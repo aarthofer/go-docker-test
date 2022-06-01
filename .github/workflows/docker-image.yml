@@ -16,6 +16,9 @@ jobs:
      - name: Echo
        run:  echo ${{ secrets.DOCKERHUB_USERNAME }}
 
+     - name: Current Dir
+       run:  ls
+
      - name: Login
        run: docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}
       
