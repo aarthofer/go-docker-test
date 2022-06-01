@@ -33,7 +33,9 @@ jobs:
        run: go test -v
 
      - name: Echo
-       run:  GIT_SHA="$(git rev-parse --short HEAD)" | echo "Test:" | echo $GIT_SHA | echo " end"
+       run:  |
+             git_hash=$(git rev-parse --short "$GITHUB_SHA")
+             echo "Sha: ${{ steps.vars.outputs.git_hash }}" 
 
      - name: Login
        run: docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}
