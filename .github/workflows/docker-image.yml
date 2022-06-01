@@ -12,9 +12,12 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    steps:      
+    steps:
+     - name: Echo
+       run:  echo ${{ secrets.DOCKERHUB_USERNAME }}
+
      - name: Login
-       run: echo ${{ secrets.DOCKERHUB_USERNAME }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin ${{ secrets.DOCKERHUB_TOKEN }}
+       run: docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin ${{ secrets.DOCKERHUB_TOKEN }}
       
      - name: Build
        run: docker image build -f Dockerfile -t arthofer93/my-firstimage:0.0.1 ./
