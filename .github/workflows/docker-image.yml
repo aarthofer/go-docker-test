@@ -45,7 +45,7 @@ jobs:
        run: docker image build -f ./Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/my-firstimage:0.0.1 ./
 
      - name: Tag image
-       run: docker tag ${{ secrets.DOCKERHUB_USERNAME }}/my-firstimage:0.0.1 ${{ secrets.DOCKERHUB_USERNAME }}/my-firstimage:$GIT_SHA
+       run: docker tag ${{ secrets.DOCKERHUB_USERNAME }}/my-firstimage:0.0.1 ${{ secrets.DOCKERHUB_USERNAME }}/my-firstimage:${{ env.GIT_HASH }}
       
      - name: publish
-       run: docker image push ${{ secrets.DOCKERHUB_USERNAME }}/my-firstimage:0.0.1 | docker image push ${{ secrets.DOCKERHUB_USERNAME }}/my-firstimage:$GIT_SHA
+       run: docker image push ${{ secrets.DOCKERHUB_USERNAME }}/my-firstimage:0.0.1 | docker image push ${{ secrets.DOCKERHUB_USERNAME }}/my-firstimage:${{ env.GIT_HASH }}
