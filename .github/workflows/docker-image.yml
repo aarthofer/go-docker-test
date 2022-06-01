@@ -33,7 +33,7 @@ jobs:
        run: go test -v
 
      - name: Echo
-       run:  GIT_SHA="$(git rev-parse --short HEAD)" | echo $GIT_SHA
+       run:  GIT_SHA="$(git rev-parse --short HEAD)" | echo "Test:" | echo $GIT_SHA | echo " end"
 
      - name: Login
        run: docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}
