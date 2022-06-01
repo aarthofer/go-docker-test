@@ -24,3 +24,4 @@ EXPOSE 8888
 CMD [ "/usr/timeservice" ]
 
 # docker image build -f Dockerfile -t arthofer93/my-firstimage:0.0.1 ./
+# docker image push arthofer93/my-firstimage:0.0.1
